@@ -419,42 +419,42 @@ class AppDialog(QtGui.QWidget):
         need to be called here.
         """
         # display exit splash screen
-        splash_pix = QtGui.QPixmap(":/res/exit_splash.png")
-        splash = QtGui.QSplashScreen(splash_pix, QtCore.Qt.WindowStaysOnTopHint)
-        splash.setMask(splash_pix.mask())
-        splash.show()
-        QtCore.QCoreApplication.processEvents()
+        # splash_pix = QtGui.QPixmap(":/res/exit_splash.png")
+        # splash = QtGui.QSplashScreen(splash_pix, QtCore.Qt.WindowStaysOnTopHint)
+        # splash.setMask(splash_pix.mask())
+        # splash.show()
+        # QtCore.QCoreApplication.processEvents()
 
-        try:
-            # clear the selection in the main views.
-            # this is to avoid re-triggering selection
-            # as items are being removed in the models
-            #
-            # note that we pull out a fresh handle to the selection model
-            # as these objects sometimes are deleted internally in the view
-            # and therefore persisting python handles may not be valid
-            self.ui.history_view.selectionModel().clear()
-            self.ui.publish_view.selectionModel().clear()
+        # try:
+        #     # clear the selection in the main views.
+        #     # this is to avoid re-triggering selection
+        #     # as items are being removed in the models
+        #     #
+        #     # note that we pull out a fresh handle to the selection model
+        #     # as these objects sometimes are deleted internally in the view
+        #     # and therefore persisting python handles may not be valid
+        #     self.ui.history_view.selectionModel().clear()
+        #     self.ui.publish_view.selectionModel().clear()
 
-            # disconnect some signals so we don't go all crazy when
-            # the cascading model deletes begin as part of the destroy calls
-            for p in self._entity_presets:
-                self._entity_presets[
-                    p
-                ].view.selectionModel().selectionChanged.disconnect(
-                    self._on_treeview_item_selected
-                )
+        #     # disconnect some signals so we don't go all crazy when
+        #     # the cascading model deletes begin as part of the destroy calls
+        #     for p in self._entity_presets:
+        #         self._entity_presets[
+        #             p
+        #         ].view.selectionModel().selectionChanged.disconnect(
+        #             self._on_treeview_item_selected
+        #         )
 
-            # gracefully close all connections
-            shotgun_globals.unregister_bg_task_manager(self._task_manager)
-            self._task_manager.shut_down()
+        #     # gracefully close all connections
+        #     shotgun_globals.unregister_bg_task_manager(self._task_manager)
+        #     self._task_manager.shut_down()
 
-        except:
-            app = sgtk.platform.current_bundle()
-            app.log_exception("Error running Loader App closeEvent()")
+        # except:
+        #     app = sgtk.platform.current_bundle()
+        #     app.log_exception("Error running Loader App closeEvent()")
 
-        # close splash
-        splash.close()
+        # # close splash
+        # splash.close()
 
         # okay to close dialog
         event.accept()
